@@ -10,7 +10,7 @@ ctx.strokeStyle = "black";
 
 ctx.fillRect(0,0,gameCanvas.width,gameCanvas.height);
 ctx.strokeRect(0,0,gameCanvas.width,gameCanvas.height);
-let snake, dx, dy, score, gameStarted keyPressed;
+let snake, dx, dy, score, gameStarted, keyPressed;
 
 const resetSnake = () => {
 	snake = [
@@ -135,43 +135,44 @@ const clearCanvas = () => {
 }
 
 keyPressed = false;
+const allowNextKey = () => {
+	setTimeout(() => {
+		keyPressed = false;
+	}, 100)
+}
+
 window.addEventListener("keydown", () => {
 	if (!keyPressed) {
-		switch (event.key) {
-		    case "ArrowLeft":
-			if (dx != 10) {
-				dx = -10;
-				dy = 0;
-				keyPressed = true;
+		if (event.key === "ArrowLeft") {
+		    if (dx != 10) {
+			    dx = -10;
+			    dy = 0;
+			  	keyPressed = true;
 			}
-			break;
-		    case "ArrowRight":
+		} else if (event.key === "ArrowRight") {
 			if (dx != -10) {
-				dx = 10;
-				dy = 0;
-				keyPressed = true;
+		    	dx = 10;
+		    	dy = 0;
+		    	keyPressed = true;
 			}
-			break;
-		    case "ArrowUp":
+		} else if (event.key === "ArrowUp") {
 			if (dy != 10) {
-				dx = 0;
-				dy = -10;
-				keyPressed = true;
+			    dx = 0;
+			    dy = -10;
+			    keyPressed = true;
 			}
-			break;
-		    case "ArrowDown":
-			if (dy != -10) {
-				dx = 0;
-				dy = 10;
-				keyPressed = true;
+		} else if (event.key === "ArrowDown") {
+		    if (dy != -10) {
+			    dx = 0;
+			    dy = 10;
+			    keyPressed = true;
 			}
-			break;
-		    case " ":
-			if (!gameStarted) {
-				startGame()
-	    		}
+		} else if (event.key === " ") {
+		    if (!gameStarted) {
+		    	startGame()
+		    }
 		}
-		keyPressed = false;
+		allowNextKey()
 	}
 })
 
