@@ -12,6 +12,9 @@ ctx.fillRect(0,0,gameCanvas.width,gameCanvas.height);
 ctx.strokeRect(0,0,gameCanvas.width,gameCanvas.height);
 let snake, dx, dy, score, gameStarted, keyPressed;
 
+const directional_queue = [{dx: 10, dy: 0}];
+
+
 const resetSnake = () => {
 	snake = [
 		{x: 250, y: 250},
@@ -76,6 +79,12 @@ const didGameEnd = () => {
 }
 
 const advanceSnake = () => {
+	if (directional_queue.length) {
+		let d = directional_queue.shift();
+		dx = d.dx;
+		dy = d.dy
+	}
+
 	const head = {
 		x: snake[0].x + dx,
 		y: snake[0].y + dy
@@ -142,37 +151,40 @@ const allowNextKey = () => {
 }
 
 window.addEventListener("keydown", () => {
-	if (!keyPressed) {
-		if (event.key === "ArrowLeft") {
-		    if (dx != 10) {
-			    dx = -10;
-			    dy = 0;
-			  	keyPressed = true;
-			}
-		} else if (event.key === "ArrowRight") {
-			if (dx != -10) {
-		    	dx = 10;
-		    	dy = 0;
-		    	keyPressed = true;
-			}
-		} else if (event.key === "ArrowUp") {
-			if (dy != 10) {
-			    dx = 0;
-			    dy = -10;
-			    keyPressed = true;
-			}
-		} else if (event.key === "ArrowDown") {
-		    if (dy != -10) {
-			    dx = 0;
-			    dy = 10;
-			    keyPressed = true;
-			}
-		} else if (event.key === " ") {
-		    if (!gameStarted) {
-		    	startGame()
-		    }
+	if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "ArrowUp" || event.key === "ArrowDown") {
+		switch (event.key) {
+			case "ArrowLeft":
+				if (dx !== 10) {
+					dx = -10;
+					dy = 0;
+				}
+				break;
+			case "ArrowRight":
+				if (dx !== -10) {
+					dx = 10;
+					dy = 0;
+				}
+				break;
+			case "ArrowUp":
+				if (dy !== 10) {
+					dx = 0;
+					dy = -10;
+				}
+				break;
+			case "ArrowDown":
+				if (dy !== -10) {
+					dx = 0;
+					dy = 10;
+				}
+				break;
 		}
-		allowNextKey()
+		if (directional_queue.length < 3) {
+			directional_queue.push({dx: dx, dy: dy});
+		}
+	} else if (event.key === " ") {
+		if (!gameStarted) {
+			startGame()
+		}
 	}
 })
 
