@@ -188,6 +188,78 @@ window.addEventListener("keydown", () => {
 	}
 })
 
+
+let xDown = null;
+let yDown = null;
+
+const getTouch = (e) => {
+	return e.touches || e.originalEvent.touches;
+}
+
+const handleTouchStart = (e) => {
+	const firstTouch = getTouch(e)[0];
+	xDown = firstTouch.clientX;
+	yDown = firstTouch.clientY;
+}
+
+const handleTouchMove = (e) => {
+	if (!xDown || !yDown) {
+		return
+	}
+
+	let xUp = e.touches[0].clientX;
+	let yUp = e.touches[0].clientY;
+
+	let xDiff = xDown - xUp;
+	let yDiff = yDown - yUp;
+
+	if (Math.abs(xDiff) > Math.abs(yDiff)) {
+		if (xDiff > 0) {
+			//left swp
+			console.log('swipe left')
+			if (dx !== 10) {
+					dx = -10;
+					dy = 0;
+				}
+		} else {
+			//right swp
+			console.log('swipe right')
+				if (dx !== -10) {
+					dx = 10;
+					dy = 0;
+				}
+		}
+	} else {
+		if (yDiff > 0) {
+			//up swp
+			console.log('swipe up')
+			if (dy !== 10) {
+					dx = 0;
+					dy = -10;
+				}
+		} else {
+			//down swp
+			console.log('swipe down')
+			if (dy !== -10) {
+					dx = 0;
+					dy = 10;
+				}
+		}
+	}
+
+	if (directional_queue.length < 3) {
+			directional_queue.push({dx: dx, dy: dy});
+		}
+
+	xDown = null;
+	yDown = null;
+}
+
+window.addEventListener('touchstart', handleTouchStart, false);
+window.addEventListener('touchmove', handleTouchMove, false);
+
+
+
 const startGame = () => {
 	setTimeout(() => {
 		main();

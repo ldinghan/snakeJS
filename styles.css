@@ -59,6 +59,7 @@ body {
 	align-items: center;
 	flex-direction: column;
 	background: #555555;
+	overflow: hidden;
 }
 
 #scoreContainer {
@@ -80,6 +81,7 @@ body {
 	align-items: center;
 	position: fixed;
 	font-size: 3rem;
+	text-align: center;
 	left: 50%;
 	top: 50%;
 	transform: translateX(-50%) translateY(-50%);
@@ -92,4 +94,17 @@ body {
 
 #startGameBtn:hover {
 	transform: translateX(-50%) translateY(-50%) scale(1.03);
+}
+
+#gameCanvas {
+	width: 70vw;
+	height: 70vh;
+	max-width: 70vh;
+	max-height: 70vw;
+}
+
+@media only screen and (max-height: 260px) {
+	#startGameBtn {
+		font-size: 1.5rem;
+	}
 }
